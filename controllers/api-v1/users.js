@@ -53,7 +53,40 @@ router.post('/register', async (req, res) => {
 })
 
 // POST /user/login -- validate login credentials
+router.post('/login', async (req, res) => {
+    try{
+        // try to find the user in the DB from the req.body.email
+        const findUser = await db.User.findOne({
+            email: req.body.email
+        })
 
+        const validationFailedMessage = 'Incorrect username OR password 😢'
+
+        // if user found  -- return immediately
+        if(!findUser) return res.status(400).json({ msg: validationFailedMessage })
+
+        // check the users password from the DB against what is in the req.body
+        const matchPassword = await bcrypt.compare(req.body.password, findUser.password)
+
+        // if the password doesn't match -- return immediately (dont give sensitive info)
+        if((!matchPassword)) return res.status(400).json({ msg: validationFailedMessage })
+
+        // create the jwt payload
+        const payload = {
+            name: findUser.name,
+            email: findUser.email,
+            id: findUser.id
+        }
+
+        // sign the jwt and send it back
+        const token = await jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: 60 * 60})
+        res.json({token})
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json({msg: 'internal server error'})
+    }
+})
 // GET /auth-locked -- will redirect if a bad jwt is found
 
 

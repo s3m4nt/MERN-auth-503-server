@@ -19,7 +19,6 @@ app.use(express.json()) // for request body
 // controllers
 app.use('/api-v1/users', require('./controllers/api-v1/users.js'))
 
-
 app.get('/', (req, res) => {
     res.json({msg: 'hello from the backend! 👋'})
     // res.send('Sending res.send')

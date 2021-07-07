@@ -15,7 +15,7 @@ const connect = () => {
     const db = mongoose.connection
 
     db.once('open', () => {
-        console.log(`⛓ MongoDB connection! ${db.host}:${db.port}`);
+        console.log(`⛓  - MongoDB connection! ${db.host}:${db.port} - ⛓`);
     })
     db.on('error', (err) => {
         console.log(`uh oh! ${err}`);
