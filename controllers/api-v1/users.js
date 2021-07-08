@@ -89,5 +89,4 @@ router.post('/login', async (req, res) => {
 })
 // GET /auth-locked -- will redirect if a bad jwt is found
 
-// comment here. 
 module.exports = router
